@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate')%>
+<div class="container mt-2">
+    <div class="text-center ">
+        <h1 >Awaiting Payment Completion
+        </h1>
+        <div class="spinner-border text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+    </div>
+</div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            "key": '<%= RAZORPAY_KEY_ID %>',
+            "amount": '<%= order.amount %>',
+            "currency": "INR",
+            "name": "YelpCamp",
+            "description": "<%= campground.title %>",
+            "order_id": '<%= order.id%>',
+            "handler": async function (response){
+                await fetch('/campgrounds/<%= campground.id %>/book/confirm',{
+                    method: 'POST',
+                    headers:{
+                        'Content-type':'application/json'
+                    },
+                    body: JSON.stringify({response,booking:{date:'<%= order.notes.date %>',price:'<%= order.amount%>'}})
+                }).then(res =>{
+                    window.location.href = res.url
+                })
+            },
+            "theme": {
+                "color": "#343a40"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open()
+        rzp1.on('payment.failed', async function (response){
+                window.location.href = `/campgrounds/${campground._id}/book`
+                alert('Some Error Occured')
+        });
+    </script>

@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate')%>
+<div class="row">
+    <h1 class="text-center">Book <%= campground.title %> Campground</h1>
+    <div class="col-md-6 offset-md-3">
+        <form action="/campgrounds/<%= campground.id %>/book" method="POST" novalidate class="validated-form">
+            <div class="mb-3">
+                <label class="form-label" for="date">Date </label>
+                <input class="form-control" type="date" id="date" name="booking[date]" required min=<%= new Date().toJSON().slice(0,10) %>  >
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="name">Your Name</label>
+                <input class="form-control" type="text" id="name" name="book[name]" value=<%= currentUser && currentUser.username %> disabled required>
+                <input class="form-control" type="hidden" id="name" name="booking[name]" value=<%= currentUser && currentUser.username %>  required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="name">Campground Price (Per Night)</label>
+                <input class="form-control" type="text" id="name" name="book[price]" value=<%= campground.price %> disabled required>
+                <input class="form-control" type="hidden" id="name" name="booking[price]" value=<%= campground.price %>  required>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-success" id="rzp-button1">Book Campground</button>
+            </div>
+        </form>
+        <a href="/campgrounds">All Campgrounds</a>
+    </div>
+</div>
