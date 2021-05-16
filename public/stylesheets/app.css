@@ -7,3 +7,11 @@
     width: 100%;
     height: 300px;
 }
+
+body {
+    background-color: #ffffff;
+}
+
+.rounded-borders {
+    border-radius: 20px;
+}
